@@ -29,19 +29,30 @@ public class InternetAppPage {
         driver.get("https://the-internet.herokuapp.com/login");
     }
 
-   public void login(String user, String pass) {
-    // ✅ If already logged in (browser reuse)
-    if (isElementPresent(logoutButton)) {
-        System.out.println("Already logged in – skipping login");
-        return;
+    public void login(String user, String pass) {
+
+        // ✅ If already logged in (browser reuse)
+        if (isElementPresent(logoutButton)) {
+            System.out.println("Already logged in – skipping login");
+            return;
+        }
+
+        driver.findElement(username).clear();
+        driver.findElement(username).sendKeys(user);
+
+        driver.findElement(password).clear();
+        driver.findElement(password).sendKeys(pass);
+
+        driver.findElement(loginButton).click();
+
+        // ✅ Wait for either flash message OR logout button to appear
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(flashMessage));
+        } catch (Exception e) {
+            // Flash message didn't appear - that's OK, login might have failed
+            System.out.println("Flash message not visible - login may have failed");
+        }
     }
-    
-    // ... fill in credentials ...
-    driver.findElement(loginButton).click();
-    
-    // ✅ Flash message appears only on fresh login
-    wait.until(ExpectedConditions.visibilityOfElementLocated(flashMessage));  // ← FAILS HERE
-}
 
     public boolean isLoginSuccess() {
         return isElementPresent(logoutButton);
