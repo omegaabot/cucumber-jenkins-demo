@@ -8,8 +8,7 @@ import com.demo.factory.DriverFactory;
 import com.demo.utils.ScreenshotUtil;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 
 public class Hooks {
@@ -17,9 +16,9 @@ public class Hooks {
     private static final Logger logger =
             LogManager.getLogger(Hooks.class);
 
-    @BeforeAll
-    public static void beforeAll() {
-        logger.info("=== Opening browser once for all scenarios ===");
+    @Before  // ✅ CHANGED: Runs BEFORE EACH scenario (not BeforeAll)
+    public void beforeScenario() {
+        logger.info("=== Opening browser for scenario ===");
         DriverFactory.initDriver();
     }
 
@@ -43,9 +42,9 @@ public class Hooks {
         }
     }
 
-    @AfterAll
-    public static void afterAll() {
-        logger.info("=== Closing browser after all scenarios ===");
+    @After  // ✅ CHANGED: Runs AFTER EACH scenario (not AfterAll)
+    public void afterScenario() {
+        logger.info("=== Closing browser after scenario ===");
         DriverFactory.quitDriver();
     }
 }
