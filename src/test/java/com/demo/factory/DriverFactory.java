@@ -6,8 +6,8 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class DriverFactory {
@@ -22,14 +22,15 @@ public class DriverFactory {
     public static void initDriver() {
         if (driver == null) {
 
-            logger.info("Initializing Edge browser");
+            logger.info("Initializing Chrome browser");
 
-            EdgeOptions options = new EdgeOptions();
+            ChromeOptions options = new ChromeOptions();
 
             // Headless mode options for CI/Jenkins
-            options.addArguments("--headless=new");      // New headless mode for Edge
+            options.addArguments("--headless=new");      // Headless mode
             options.addArguments("--no-sandbox");        // Bypass sandbox
             options.addArguments("--disable-gpu");       // Disable GPU acceleration
+            options.addArguments("--disable-dev-shm-usage"); // Overcome limited resource problems
 
             // Existing options
             options.addArguments("--disable-notifications");
@@ -43,7 +44,7 @@ public class DriverFactory {
                     "profile.password_manager_enabled", false
             ));
 
-            driver = new EdgeDriver(options);
+            driver = new ChromeDriver(options);
 
             driver.manage()
                   .timeouts()
@@ -67,7 +68,7 @@ public class DriverFactory {
 
     public static void quitDriver() {
         if (driver != null) {
-            logger.info("Closing Edge browser");
+            logger.info("Closing Chrome browser");
             driver.quit();
             driver = null;
         }
