@@ -26,6 +26,12 @@ public class DriverFactory {
 
             EdgeOptions options = new EdgeOptions();
 
+            // Add these three lines for CI/Jenkins headless mode
+            options.addArgument("--headless=new");  // New headless mode for Edge
+            options.addArgument("--no-sandbox");    // Bypass sandbox
+            options.addArgument("--disable-gpu");   // Disable GPU acceleration
+
+            // Existing options
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-infobars");
             options.addArguments("--disable-extensions");
